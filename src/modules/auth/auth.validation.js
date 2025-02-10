@@ -1,4 +1,4 @@
-import joi, { required } from "joi";
+import joi from "joi";
 
 
 export const registerSchema = joi.object({
