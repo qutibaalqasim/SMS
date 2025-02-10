@@ -3,7 +3,7 @@ import { sequelize } from "../connection.js";
 import userModel from "./user.model.js";
 
 
-const studentModel = sequelize.define({
+const studentModel = sequelize.define('Student',{
     studentName:{
         type: DataTypes.STRING,
         allowNull:false,
