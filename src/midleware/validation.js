@@ -7,7 +7,7 @@ const validation = (schema)=>{
         const validateResult = schema.validate(inputData,{abortEarly:false});
 
         if(validateResult?.error){
-            return next(new AppError(validateResult.error, 400));
+            return next(new AppError(validateResult.error.stack, 400));
         }
 
         next();
