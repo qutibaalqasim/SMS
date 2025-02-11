@@ -12,7 +12,7 @@ export const getUsers = async (req,res)=>{
 
     return res.status(200).json({message:"success" , users});
 }
-export const getStudents = async (req,res)=>{
+export const getAllStudents = async (req,res)=>{
     const students = await studentModel.findAll({
         attributes:['id', 'studentName', 'university', 'grade'],
         include:{
@@ -38,6 +38,20 @@ export const deleteUser = async (req,res,next)=>{
             }
         });
         return res.status(200).json({message:"User deleted successfully"});
+}
+
+export const deleteStudent = async (req,res,next)=>{
+    const {id} = req.params;
+    const student = await studentModel.findByPk(id);
+    if(student == null){
+        return next(new AppError("student not found",404));
+    }
+    await student.destroy({
+        where:{
+            id
+        }
+    });
+    return res.status(200).json({message:"Student deleted successfully"});
 }
 
 
