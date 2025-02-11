@@ -1,4 +1,4 @@
-import { BelongsTo, DataTypes, HasMany } from "sequelize";
+import { DataTypes} from "sequelize";
 import { sequelize } from "../connection.js";
 import userModel from "./user.model.js";
 
