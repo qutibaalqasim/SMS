@@ -16,7 +16,6 @@ router.get('/getAllStudents',auth(), asyncHandler(getAllStudents));
 router.delete('/:id', auth(),validation(idValidate),asyncHandler(deleteUser));
 //delete any student by the admin
 router.delete('/stDelete/:id', auth(), validation(idValidate), asyncHandler(deleteStudent));
-
  //update a user image by id
 router.put('/:id', validation(idValidate), fileUpload().single('image'), asyncHandler(updateImage));
 

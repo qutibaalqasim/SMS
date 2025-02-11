@@ -9,11 +9,15 @@ import fileUpload from "../../utils/multer.js";
 
 
 const router = Router();
-
+//get students who are added by the specific user
 router.get('/',authSt(), asyncHandler(getStudents));
+ //add new student
 router.post('/',authSt(),validation(studentSchema), asyncHandler(addStudent));
+//delete student by the user who added them
 router.delete('/:id',authSt(),validation(validateID), asyncHandler(deleteStudent));
+ //update student details by the user who added them
 router.put('/:id', authSt(),validation(validateID), asyncHandler(updateStudent));
+ //update student picture by the user who added them
 router.put('/newImage/:id', authSt(),validation(validateID),fileUpload().single('image'), asyncHandler(updateStudentImg));
 
 
