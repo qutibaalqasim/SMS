@@ -1,6 +1,7 @@
 import studentModel from "../../../DB/models/student.model.js";
 import userModel from "../../../DB/models/user.model.js";
 import { AppError } from "../../utils/AppError.js";
+import cloudinary from "../../utils/cloudinary.js";
 
 
 export const getStudents = async (req,res)=>{
@@ -55,4 +56,20 @@ export const updateStudent = async (req,res,next)=>{
     }
     await student.update({userName,university,grade});
     return res.status(200).json({message:"student updated successfully", student});
+}
+
+export const updateStudentImg = async (req,res,next)=>{
+    const {id} = req.params;
+    const student = await studentModel.findByPk(id);
+    if(student == null){
+        return next(new AppError("Student not found",404));
+    }
+    const check = student;
+    if(check.UserId != req.id){
+        return next(new AppError("Unauthorized to updateImage for this student",401));
+    }
+    const {secure_url} = await cloudinary.uploader.upload(req.file.path);
+    student.studentPic = secure_url;
+    await student.save();
+    return res.status(200).json({message:"student image updated successfully", student});
 }
