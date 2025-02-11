@@ -41,3 +41,18 @@ export const deleteStudent = async (req,res,next)=>{
     });
     return res.status(200).json({message:"student deleted successfully"});
 }
+
+export const updateStudent = async (req,res,next)=>{
+    const {id} = req.params;
+    const {userName, university, grade} = req.body;
+    const student = await studentModel.findByPk(id);
+    if(student == null){
+        return next(new AppError("Student not found",404));
+    }
+    const check = student;
+    if(check.UserId != req.id){
+        return next(new AppError("Unauthorized to update this student",401));
+    }
+    await student.update({userName,university,grade});
+    return res.status(200).json({message:"student updated successfully", student});
+}
