@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 
 export const register = async (req,res)=>{
     const {userName , email , password} = req.body;
-    const hashedPassword = bcrypt.hashSync(password, 8);
+    const hashedPassword = bcrypt.hashSync(password, process.env.SALT_ROUND);
     const user = await userModel.create({userName, email, password: hashedPassword});
     sendEmail(email, "Welcome", `<h2> hello ya ${userName} </h2>`);
     return res.status(201).json({message:"registered successfully"});
@@ -29,7 +29,7 @@ export const login = async (req,res,next)=>{
         return next(new AppError("incorrect password", 400));
     }
     const token = jwt.sign(
-        {id:user.id, name:user.userName, role:user.role},"qqq"
+        {id:user.id, name:user.userName, role:user.role},process.env.LOGIN_SIGNETURE
     );
     return res.status(200).json({message:"valid user", token});
 }
