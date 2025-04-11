@@ -1,29 +1,23 @@
 import { DataTypes} from "sequelize";
 import { sequelize } from "../connection.js";
 import userModel from "./user.model.js";
+import universityModel from "./university.model.js";
 
 
 const studentModel = sequelize.define('Student',{
-    studentName:{
-        type: DataTypes.STRING,
-        allowNull:false,
-        unique:true
-    },
-    university:{
-        type: DataTypes.STRING,
-        allowNull:false
-    },
-    grade:{
-        type: DataTypes.INTEGER,
-        allowNull:false
-    },
-    studentPic:{
-        type: DataTypes.STRING,
-        allowNull:true
-    }
-
+  studentNumber:{
+    type:DataTypes.INTEGER,
+    unique:true,
+    allowNull:false
+  },
+  department:{
+    type:DataTypes.STRING,
+    allowNull:true
+  }
 });
 
+universityModel.hasMany(studentModel);
+studentModel.belongsTo(universityModel);
 userModel.hasMany(studentModel);
 studentModel.belongsTo(userModel);
 

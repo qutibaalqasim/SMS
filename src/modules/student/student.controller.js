@@ -31,8 +31,8 @@ export const deleteStudent = async (req,res,next)=>{
     if(student == null){
         return next(new AppError("Student not found",404));
     }
-    const check = student;
-    if(check.UserId != req.id){
+   // const check = student;
+    if(student.UserId != req.id){
         return next(new AppError("Unauthorized to delete this student",401));
     }
     await student.destroy({
@@ -50,8 +50,8 @@ export const updateStudent = async (req,res,next)=>{
     if(student == null){
         return next(new AppError("Student not found",404));
     }
-    const check = student;
-    if(check.UserId != req.id){
+   // const check = student;
+    if(student.UserId != req.id){
         return next(new AppError("Unauthorized to update this student",401));
     }
     await student.update({userName,university,grade});
@@ -64,8 +64,8 @@ export const updateStudentImg = async (req,res,next)=>{
     if(student == null){
         return next(new AppError("Student not found",404));
     }
-    const check = student;
-    if(check.UserId != req.id){
+   // const check = student;
+    if(student.UserId != req.id){
         return next(new AppError("Unauthorized to updateImage for this student",401));
     }
     const {secure_url} = await cloudinary.uploader.upload(req.file.path);
