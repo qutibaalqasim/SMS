@@ -1,6 +1,7 @@
 import { Op } from "sequelize";
 import userModel from "../../../DB/models/user.model.js"
 import { AppError } from "../../utils/AppError.js";
+import cloudinary from "../../utils/cloudinary.js";
 
 
 export const getAllStudents = async(req,res,next)=>{
@@ -58,3 +59,34 @@ export const deleteStudent = async (req,res,next)=>{
     return res.status(200).json({message:"success"});
 }
 
+export const updateStudent = async(req,res,next)=>{
+    const {id} = req.params;
+    const student = await userModel.findOne({
+        where:{
+            [Op.and]:[
+                {id},
+                {role:'student'}
+            ]
+        }
+    });
+    if(!student){
+        return next(new AppError("incorrect id!!", 404));
+    }
+    await student.update(req.body);
+    return res.status(200).json({message:"success"});
+}
+
+export const updateProfileImage = async (req,res,next)=>{
+    const {id} = req.params;
+    const user = await userModel.findByPk(id);
+    if(!user){
+        return next(new AppError("user not found!", 404));
+    }
+    const {secure_url} = await cloudinary.uploader.upload(req.file.path);
+    if(!req.file){
+        return next(new AppError("there is no image to upload!", 404));
+    }
+    user.profilePic = secure_url;
+    await user.save();
+    return res.status(200).json({message:"success"});
+}
