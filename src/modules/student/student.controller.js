@@ -24,3 +24,19 @@ export const getUniversityStudents = async(req,res,next)=>{
     });
     return res.status(200).json({message:"success", students});
 }
+
+export const getStudent = async (req,res,next)=>{
+    const {id} = req.params;
+    const student = await userModel.findOne({
+        where:{
+            [Op.and]:[
+                {id},
+                {role:'student'}
+            ]
+        }
+    });
+    if(!student){
+        return next(new AppError("incorrect id!!", 404));
+    }
+    return res.status(200).json({message:"success",student});
+}
