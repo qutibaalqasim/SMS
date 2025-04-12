@@ -40,3 +40,21 @@ export const getStudent = async (req,res,next)=>{
     }
     return res.status(200).json({message:"success",student});
 }
+
+export const deleteStudent = async (req,res,next)=>{
+    const {universityId} = req.body;
+    const student = await userModel.findOne({
+        where:{
+            [Op.and]:[
+                {universityId},
+                {role:'student'}
+            ]
+        }
+    });
+    if(!student){
+        return next(new AppError("incorrect universityId!!", 404));
+    }
+    await student.destroy();
+    return res.status(200).json({message:"success"});
+}
+
