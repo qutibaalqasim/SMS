@@ -29,7 +29,16 @@ const userModel = sequelize.define('User', {
         type:DataTypes.ENUM('student','instructor','admin','university_admin'),
         defaultValue:'student',
         allowNull:false
-    }
+    },
+    userNumber:{
+        type:DataTypes.INTEGER,
+        unique:true,
+        allowNull:false
+      },
+      department:{
+        type:DataTypes.STRING,
+        allowNull:true
+      }
 });
 
 export default userModel;

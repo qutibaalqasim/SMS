@@ -6,9 +6,18 @@ import jwt from 'jsonwebtoken';
 
 export const register = async (req,res)=>{
     const {userName , email , password} = req.body;
-    const hashedPassword = bcrypt.hashSync(password, process.env.SALT_ROUND);
+    const check = await userModel.findOne({
+        where:{
+            email,
+            userName
+        }       
+    }); 
+    if(checkEmail){
+        return next(new AppError("this email or userName already exist!!", 404));
+    }
+    const hashedPassword = bcrypt.hashSync(password,parseInt(process.env.SALT_ROUND));
     const user = await userModel.create({userName, email, password: hashedPassword});
-    sendEmail(email, "Welcome", `<h2> hello ya ${userName} </h2>`);
+    sendEmail(email, "Welcome", `<h2> Welcome to the Boardly ${userName} </h2>`);
     return res.status(201).json({message:"registered successfully"});
 }
 
