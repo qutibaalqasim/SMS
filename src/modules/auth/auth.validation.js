@@ -5,7 +5,7 @@ export const registerSchema = joi.object({
     userName: joi.string().min(3).max(20).required(),
     email: joi.string().email().required(),
     password: joi.string().min(6).required(),
-    userNumber: joi.string().min(4).required(),
+    universityId: joi.string().min(4).required(),
 });
 
 

@@ -30,8 +30,8 @@ const userModel = sequelize.define('User', {
         defaultValue:'student',
         allowNull:false
     },
-    userNumber:{
-        type:DataTypes.INTEGER,
+    universityId:{
+        type:DataTypes.STRING,
         unique:true,
         allowNull:false
       },
