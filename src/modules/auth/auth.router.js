@@ -13,6 +13,4 @@ router.post('/login', validation(loginSchema), asyncHandler(login));
 router.post('/sendCode', validation(sendCodeSchema), asyncHandler(sendCode));
 router.post('/forgetPassword', validation(resetPasswordSchema), asyncHandler(resetPassword));
 
-
-
 export default router;
