@@ -12,7 +12,15 @@ export const confirmSchema = joi.object({
     token: joi.string().required(),
 });
 
+export const sendCodeSchema = joi.object({
+    email: joi.string().email().required(),
+});
 
+export const resetPasswordSchema = joi.object({
+    code: joi.string().max(4).required(),
+    email: joi.string().email().required(),
+    newPassword: joi.string().min(6).required(),
+});
 
 export const loginSchema = joi.object({
     email: joi.string().email().required(),

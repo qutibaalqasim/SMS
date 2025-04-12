@@ -38,6 +38,10 @@ const userModel = sequelize.define('User', {
       department:{
         type:DataTypes.STRING,
         allowNull:true
+      },
+      sendCode:{
+        type:DataTypes.STRING,
+        defaultValue:null
       }
 });
 

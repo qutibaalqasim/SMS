@@ -4,6 +4,7 @@ import { sendEmail } from '../../utils/sendEmail.js';
 import { AppError } from '../../utils/AppError.js';
 import jwt from 'jsonwebtoken';
 import { Op } from 'sequelize';
+import { customAlphabet } from 'nanoid';
 
 export const register = async (req,res,next)=>{
     const {userName , email , password, universityId} = req.body;
@@ -36,8 +37,6 @@ export const confirmEmail = async(req,res,next)=>{
     return res.status(200).json({message:"success"});
 }
 
-
-
 export const login = async (req,res,next)=>{
     const {email,password} = req.body;
     const user = await userModel.findOne({
@@ -56,4 +55,35 @@ export const login = async (req,res,next)=>{
         {id:user.id, name:user.userName, role:user.role, universityId:user.universityId},process.env.LOGIN_SIGNETURE
     );
     return res.status(200).json({message:"valid user", token});
+}
+
+export const sendCode = async (req,res,next)=>{
+    const {email} = req.body;
+    const code1 = customAlphabet('1234567890abcdefABCDEF', 4);
+    const code = code1();
+    const user = await userModel.findOne({email});
+    if(!user){
+        return next(new AppError("incorrect email", 404));
+    }
+    const html = `<h2>your code is ${code}</h2>`;
+    await sendEmail(email,"code for reset password", html);
+    user.sendCode = code;
+    await user.save();
+    return res.status(200).json({message:"success"});
+}
+export const resetPassword =async (req,res,next)=>{
+    const {code, email, newPassword} = req.body;
+    const user = await userModel.findOne({email});
+    if(!user){
+        return next(new AppError("incorrect email", 404));
+    }
+    if(code != user.sendCode){
+        return next(new AppError("your code incorrect", 404));
+    }
+
+    const hashedPassword = bcrypt.hashSync(newPassword,parseInt(process.env.SALT_ROUND));
+    user.password = hashedPassword;
+    user.sendCode = null;
+    await user.save();
+    return res.status(200).json({message:"success"});
 }
