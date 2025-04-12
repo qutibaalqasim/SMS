@@ -25,6 +25,17 @@ export const register = async (req,res,next)=>{
     return res.status(201).json({message:"registered successfully"});
 }
 
+export const confirmEmail = async(req,res,next)=>{
+    const {token} = req.params;
+    const decoded = jwt.verify(token, process.env.LOGIN_SIGNETURE);
+    if(!decoded){
+        return next(new AppError("incorrect email", 404));
+    }
+    const user = await userModel.findOne({email:decoded.email});
+    await user.update({confirmEmail:true});
+    return res.status(200).json({message:"success"});
+}
+
 
 
 export const login = async (req,res,next)=>{

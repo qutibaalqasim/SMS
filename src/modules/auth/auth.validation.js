@@ -8,6 +8,10 @@ export const registerSchema = joi.object({
     universityId: joi.string().min(4).required(),
 });
 
+export const confirmSchema = joi.object({
+    token: joi.string().required(),
+});
+
 
 
 export const loginSchema = joi.object({
