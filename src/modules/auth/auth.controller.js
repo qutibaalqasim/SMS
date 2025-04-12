@@ -3,20 +3,27 @@ import userModel from '../../../DB/models/user.model.js';
 import { sendEmail } from '../../utils/sendEmail.js';
 import { AppError } from '../../utils/AppError.js';
 import jwt from 'jsonwebtoken';
+import { Op } from 'sequelize';
 
-export const register = async (req,res)=>{
-    const {userName , email , password} = req.body;
+export const register = async (req,res,next)=>{
+    const {userName , email , password, userNumber} = req.body;
     const check = await userModel.findOne({
-        where:{
-            email,
-            userName
-        }       
+       where:{
+        [Op.or]:[
+            {userName},
+            {email},
+            {userNumber}
+        ]
+
+    }
+       
+       
     }); 
-    if(checkEmail){
+    if(check){
         return next(new AppError("this email or userName already exist!!", 404));
     }
     const hashedPassword = bcrypt.hashSync(password,parseInt(process.env.SALT_ROUND));
-    const user = await userModel.create({userName, email, password: hashedPassword});
+    const user = await userModel.create({userName, email, password: hashedPassword, userNumber});
     sendEmail(email, "Welcome", `<h2> Welcome to the Boardly ${userName} </h2>`);
     return res.status(201).json({message:"registered successfully"});
 }
