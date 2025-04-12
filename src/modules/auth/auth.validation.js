@@ -6,6 +6,7 @@ export const registerSchema = joi.object({
     email: joi.string().email().required(),
     password: joi.string().min(6).required(),
     universityId: joi.string().min(4).required(),
+    universityName: joi.string().min(6).required(),
 });
 
 export const confirmSchema = joi.object({

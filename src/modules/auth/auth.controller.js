@@ -7,7 +7,7 @@ import { Op } from 'sequelize';
 import { customAlphabet } from 'nanoid';
 
 export const register = async (req,res,next)=>{
-    const {userName , email , password, universityId} = req.body;
+    const {userName , email , password, universityId, universityName} = req.body;
     const check = await userModel.findOne({
        where:{
         [Op.or]:[
@@ -21,7 +21,7 @@ export const register = async (req,res,next)=>{
         return next(new AppError("this email or userName already exist!!", 404));
     }
     const hashedPassword = bcrypt.hashSync(password,parseInt(process.env.SALT_ROUND));
-    const user = await userModel.create({userName, email, password: hashedPassword, universityId});
+    const user = await userModel.create({userName, email, password: hashedPassword, universityId,universityName});
     sendEmail(email, "Welcome", `<h2> Welcome to the Boardly ${userName} </h2>`);
     return res.status(201).json({message:"registered successfully"});
 }
@@ -52,7 +52,7 @@ export const login = async (req,res,next)=>{
         return next(new AppError("incorrect password", 400));
     }
     const token = jwt.sign(
-        {id:user.id, name:user.userName, role:user.role, universityId:user.universityId},process.env.LOGIN_SIGNETURE
+        {id:user.id, name:user.userName, role:user.role, universityId:user.universityId, universityName:user.universityName},process.env.LOGIN_SIGNETURE
     );
     return res.status(200).json({message:"valid user", token});
 }

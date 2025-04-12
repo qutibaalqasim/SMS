@@ -30,6 +30,10 @@ const userModel = sequelize.define('User', {
         defaultValue:'student',
         allowNull:false
     },
+    universityName:{
+        type:DataTypes.STRING,
+        allowNull:false
+    },
     universityId:{
         type:DataTypes.STRING,
         unique:true,
