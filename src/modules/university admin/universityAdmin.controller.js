@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import userModel from "../../../DB/models/user.model.js";
 import { AppError } from "../../utils/AppError.js";
 
@@ -43,5 +44,25 @@ export const deleteUAdmin = async (req,res,next)=>{
         return next(new AppError("incorrect id!", 404));
     }
     await UAdmin.destroy();
+    return res.status(200).json({message:"success"});
+}
+
+export const updateUAdmin = async (req,res,next)=>{
+    const {id} = req.params;
+    if(req.id != id){
+        return next(new AppError("unouthrized!!", 403));
+    }
+    const uAdmin = await userModel.findOne({
+        where:{
+            [Op.and]:[
+                {id},
+                {role:'university_admin'}
+            ]
+        }
+    });
+    if(!uAdmin){
+        return next(new AppError("incorrect id!!", 404));
+    }
+    await uAdmin.update(req.body);
     return res.status(200).json({message:"success"});
 }

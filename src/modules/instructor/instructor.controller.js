@@ -60,6 +60,9 @@ export const deleteInstructor = async (req,res,next)=>{
 
 export const updateInstructor = async (req,res,next)=>{
     const {id} = req.params;
+    if(req.id != id){
+        return next(new AppError("unouthrized!!", 403));
+    }
     const instructor = await userModel.findOne({
         where:{
             [Op.and]:[

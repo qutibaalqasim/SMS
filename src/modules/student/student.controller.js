@@ -61,6 +61,9 @@ export const deleteStudent = async (req,res,next)=>{
 
 export const updateStudent = async(req,res,next)=>{
     const {id} = req.params;
+    if(req.id != id){
+        return next(new AppError("unouthrized!!", 403));
+    }
     const student = await userModel.findOne({
         where:{
             [Op.and]:[
