@@ -17,3 +17,13 @@ export const createUAdmin = async (req,res,next)=>{
     await user.save();
     return res.status(201).json({message:"success", user});
 }
+
+export const getUAdmins = async (req,res,next)=>{
+    const UAdmins = await userModel.findAll({
+        where:{
+            role:"university_admin"
+        }
+    });
+    return res.status(200).json({message:"success"}, UAdmins);
+}
+
