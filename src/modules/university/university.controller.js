@@ -19,3 +19,8 @@ export const createUniversity = async (req,res,next)=>{
     const university = await universityModel.create(req.body);
     return res.status(201).json({message:"success",university});  
 }
+
+export const getAllUniversities = async(req,res,next)=>{
+    const universities = await universityModel.findAll();
+    return res.status(200).json({message:"success",universities});
+}
