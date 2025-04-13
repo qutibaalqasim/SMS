@@ -57,3 +57,20 @@ export const deleteInstructor = async (req,res,next)=>{
     await instructor.destroy();
     return res.status(200).json({message:"success"});
 }
+
+export const updateInstructor = async (req,res,next)=>{
+    const {id} = req.params;
+    const instructor = await userModel.findOne({
+        where:{
+            [Op.and]:[
+                {id},
+                {role:'instructor'}
+            ]
+        }
+    });
+    if(!instructor){
+        return next(new AppError("incorrect id!!", 404));
+    }
+    await instructor.update(req.body);
+    return res.status(200).json({message:"success"});
+}
