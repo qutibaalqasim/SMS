@@ -2,7 +2,8 @@ import { connectDB } from "../DB/connection.js";
 import authRouter from "./modules/auth/auth.router.js";
 import studentRouter from "./modules/student/student.router.js";
 import intructorRouter from "./modules/instructor/instructor.router.js";
-import UAdminRouter from "./modules/university admin/universityAdmin.router.js"
+import UAdminRouter from "./modules/university admin/universityAdmin.router.js";
+import universityRouter from "./modules/university/university.router.js";
 import cors from 'cors';
 const initApp = (app)=>{
     connectDB();
@@ -20,7 +21,8 @@ const initApp = (app)=>{
     app.use('/instructors',intructorRouter);
     // localhost:3000/UAdmins/
     app.use('/UAdmins',UAdminRouter);
-    
+    // localhost:3000/universities/
+    app.use('/universites', universityRouter)
     app.get('*', (req,res)=>{
         return res.status(404).json({message:"page not found"})
     });

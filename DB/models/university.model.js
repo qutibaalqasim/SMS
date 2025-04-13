@@ -14,6 +14,10 @@ const universityModel = sequelize.define('University',{
     unique:true,
     allowNull:false
    },
+   profilePic:{
+      type:DataTypes.STRING,
+      allowNull:true
+   },
    location:{
     type:DataTypes.STRING,
     allowNull:true
