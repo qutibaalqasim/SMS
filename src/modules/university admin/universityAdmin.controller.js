@@ -35,3 +35,13 @@ export const getUAdmin = async (req,res,next)=>{
     }
     return res.status(200).json({message:"success",UAdmin});
 }
+
+export const deleteUAdmin = async (req,res,next)=>{
+    const {id} = req.params;
+    const UAdmin = await userModel.findByPk(id);
+    if(!UAdmin){
+        return next(new AppError("incorrect id!", 404));
+    }
+    await UAdmin.destroy();
+    return res.status(200).json({message:"success"});
+}

@@ -8,3 +8,7 @@ export const createUAdminSchema = joi.object({
 export const getUAdminSchema = joi.object({
     id: joi.number().min(1).required(),
 });
+
+export const deleteUAdminSchema = joi.object({
+    id: joi.number().min(1).required(),
+});
