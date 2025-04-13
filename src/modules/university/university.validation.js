@@ -8,3 +8,7 @@ export const createUniversitySchema = joi.object({
     contactNumber: joi.number().min(1).max(15),
 });
 
+export const getUniversitySchema = joi.object({
+    name: joi.string().min(6).required(),
+});
+
