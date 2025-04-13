@@ -24,6 +24,14 @@ export const getUAdmins = async (req,res,next)=>{
             role:"university_admin"
         }
     });
-    return res.status(200).json({message:"success"}, UAdmins);
+    return res.status(200).json({message:"success", UAdmins});
 }
 
+export const getUAdmin = async (req,res,next)=>{
+    const {id} = req.params;
+    const UAdmin = await userModel.findByPk(id);
+    if(!UAdmin){
+        return next(new AppError("incorrect id!", 404));
+    }
+    return res.status(200).json({message:"success",UAdmin});
+}
