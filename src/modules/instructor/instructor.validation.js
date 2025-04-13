@@ -8,3 +8,7 @@ export const getUniversityInstructorsSchema = joi.object({
 export const getInstructorSchema = joi.object({
     id: joi.number().min(1).required(),
 });
+
+export const deleteInstructorSchema = joi.object({
+    universityId: joi.string().min(4).required(),
+});
