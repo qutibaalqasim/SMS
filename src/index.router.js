@@ -1,6 +1,7 @@
 import { connectDB } from "../DB/connection.js";
 import authRouter from "./modules/auth/auth.router.js";
 import studentRouter from "./modules/student/student.router.js";
+import intructorRouter from "./modules/instructor/instructor.router.js";
 import cors from 'cors';
 const initApp = (app)=>{
     connectDB();
@@ -12,9 +13,10 @@ const initApp = (app)=>{
 
     // localhost:3000/auth/
     app.use('/auth', authRouter);
-    // // localhost:3000/student/
+    // localhost:3000/students/
     app.use('/students' ,studentRouter);
-
+    // localhost:3000/instructors/
+    app.use('/instructors',intructorRouter )
     app.get('*', (req,res)=>{
         return res.status(404).json({message:"page not found"})
     });
