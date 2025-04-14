@@ -44,3 +44,15 @@ export const deleteUniversity = async (req,res,next)=>{
     return res.status(200).json({message:"success"});
 }
 
+export const updateUniversity = async (req,res,next)=>{
+    const {id} = req.params;
+    if(req.universityId != id){
+        return next(new AppError("unothrized",403));
+    }
+    const university = await universityModel.findByPk(id);
+    if(!university){
+        return next(new AppError("university not found",404));
+    }
+    await university.update(req.body);
+    return res.status(200).json({message:"success",university});
+}

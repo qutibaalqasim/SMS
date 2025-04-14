@@ -24,6 +24,7 @@ export const auth =  (accessRoles = [])=>{
             return next(new AppError("you are not authrized", 400));
         }
         req.id = decoded.id;
+        req.universityId = decoded.universityId;
         next();
     }
 }
