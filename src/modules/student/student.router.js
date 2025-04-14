@@ -11,9 +11,9 @@ import fileUpload from "../../utils/multer.js";
 const router = Router();
 
 router.get('/', auth(['admin']), asyncHandler(getAllStudents));
-router.get('/UStudent', auth(['admin', 'university_admin']),validation(getUniversityStudentsSchema), asyncHandler(getUniversityStudents));
+router.get('/u/:id', auth(['admin', 'university_admin']),validation(getUniversityStudentsSchema), asyncHandler(getUniversityStudents));
 router.get('/:id',auth(['admin', 'university_admin']), validation(getStudentSchema), asyncHandler(getStudent));
-router.delete('/',auth(['admin', 'university_admin']), validation(deleteStudentSchema), asyncHandler(deleteStudent));
+router.delete('/:id',auth(['admin', 'university_admin']), validation(deleteStudentSchema), asyncHandler(deleteStudent));
 router.put('/:id', auth(['student']), validation(updateStudentSchema), asyncHandler(updateStudent));
-router.patch('/img/:id', auth(['admin', 'university_admin', 'student' , 'insructor']), validation(updateImageSchema),fileUpload().single('image'), asyncHandler(updateProfileImage))
+router.patch('/img/:id', auth(['admin', 'university_admin', 'student' , 'insructor']), validation(updateImageSchema),fileUpload().single('image'), asyncHandler(updateProfileImage));
 export default router;

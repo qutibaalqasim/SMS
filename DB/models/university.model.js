@@ -14,6 +14,14 @@ const universityModel = sequelize.define('University',{
     unique:true,
     allowNull:false
    },
+   description:{
+      type:DataTypes.TEXT,
+      allowNull:true
+   },
+   website:{
+      type:DataTypes.STRING,
+      allowNull:true
+   },
    profilePic:{
       type:DataTypes.STRING,
       allowNull:true
@@ -29,7 +37,12 @@ const universityModel = sequelize.define('University',{
    }
 });
 
-universityModel.hasMany(userModel);
-userModel.belongsTo(universityModel);
+
+universityModel.hasMany(userModel,{
+   foreignKey:"universityId"
+});
+userModel.belongsTo(universityModel,
+   {foreignKey:"universityId"}
+);
 
 export default universityModel;

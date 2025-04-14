@@ -30,11 +30,15 @@ const userModel = sequelize.define('User', {
         defaultValue:'student',
         allowNull:false
     },
-    universityName:{
-        type:DataTypes.STRING,
-        allowNull:false
-    },
     universityId:{
+        type:DataTypes.INTEGER,
+        allowNull:false,
+        references:{
+            model: "Universities",
+            key: 'id'
+        }
+      },
+      universityNum:{
         type:DataTypes.STRING,
         unique:true,
         allowNull:false
@@ -48,5 +52,7 @@ const userModel = sequelize.define('User', {
         defaultValue:null
       }
 });
+
+
 
 export default userModel;

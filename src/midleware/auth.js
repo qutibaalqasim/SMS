@@ -17,6 +17,9 @@ export const auth =  (accessRoles = [])=>{
         }
 
         const user = await userModel.findByPk(decoded.id);
+        if(!user){
+            return next(new AppError("user not found",404));
+        }
         if(!accessRoles.includes(user.role)){
             return next(new AppError("you are not authrized", 400));
         }

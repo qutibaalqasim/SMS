@@ -10,7 +10,7 @@ import { deleteInstructorSchema, getInstructorSchema, getUniversityInstructorsSc
 const router = Router();
 
 router.get('/', auth(['admin']), asyncHandler(getAllInstructors));
-router.get('/UInstructor', auth(['admin', 'university_admin']),validation(getUniversityInstructorsSchema), asyncHandler(getUniversityInstructors));
+router.get('/UInstructor/:universityId', auth(['admin', 'university_admin']),validation(getUniversityInstructorsSchema), asyncHandler(getUniversityInstructors));
 router.get('/:id', auth(['admin', 'university_admin']),validation(getInstructorSchema), asyncHandler(getInstructor));
 router.delete('/',auth(['admin', 'university_admin']), validation(deleteInstructorSchema), asyncHandler(deleteInstructor));
 router.put('/:id', auth(['instructor']), validation(updateInstructorSchema), asyncHandler(updateInstructor));

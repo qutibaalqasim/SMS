@@ -14,12 +14,12 @@ export const getAllStudents = async(req,res,next)=>{
 }
 
 export const getUniversityStudents = async(req,res,next)=>{
-    const {universityName} = req.body;
+    const {id} = req.params;
     const students = await userModel.findAll({
         where:{
             [Op.and]:[
                 {role:'student'},
-                {universityName}
+                {universityId:id}
             ]
         }
     });
@@ -37,24 +37,24 @@ export const getStudent = async (req,res,next)=>{
         }
     });
     if(!student){
-        return next(new AppError("incorrect id!!", 404));
+        return next(new AppError("student not found", 404));
     }
     return res.status(200).json({message:"success",student});
 }
 
 export const deleteStudent = async (req,res,next)=>{
-    const {universityId} = req.body;
+    const {id} = req.params;
     const student = await userModel.findOne({
         where:{
             [Op.and]:[
-                {universityId},
+                {id},
                 {role:'student'}
             ]
         }
     });
-    if(!student){
-        return next(new AppError("incorrect universityId!!", 404));
-    }
+    if (!student) {
+        return next(new AppError("student not found", 404));
+      }
     await student.destroy();
     return res.status(200).json({message:"success"});
 }
@@ -73,7 +73,7 @@ export const updateStudent = async(req,res,next)=>{
         }
     });
     if(!student){
-        return next(new AppError("incorrect id!!", 404));
+        return next(new AppError("student not found", 404));
     }
     await student.update(req.body);
     return res.status(200).json({message:"success"});
@@ -81,6 +81,9 @@ export const updateStudent = async(req,res,next)=>{
 
 export const updateProfileImage = async (req,res,next)=>{
     const {id} = req.params;
+    if(id != req.id){
+        return next(new AppError("unothrized", 403));
+    }
     const user = await userModel.findByPk(id);
     if(!user){
         return next(new AppError("user not found!", 404));

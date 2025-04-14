@@ -26,14 +26,21 @@ export const getAllUniversities = async(req,res,next)=>{
 }
 
 export const getUniversity = async (req,res,next)=>{
-    const {name} = req.body;
-    const university = await universityModel.findOne({
-        where: {
-            name
-        }
-    });
+    const {id} = req.params;
+    const university = await universityModel.findByPk(id);
     if(!university){
-        return next(new AppError("incorrect name!!", 404));
+        return next(new AppError("university not found", 404));
     }
     return res.status(200).json({message:"success",university});
 }
+
+export const deleteUniversity = async (req,res,next)=>{
+    const {id} = req.params;
+    const university = await universityModel.findByPk(id);
+    if(!university){
+        return next(new AppError("university not found", 404));
+    }
+    await university.destroy();
+    return res.status(200).json({message:"success"});
+}
+

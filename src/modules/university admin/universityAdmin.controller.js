@@ -5,14 +5,14 @@ import { AppError } from "../../utils/AppError.js";
 
 
 export const createUAdmin = async (req,res,next)=>{
-    const {universityId} = req.body;
+    const {universityNum} = req.body;
     const user = await userModel.findOne({
         where:{
-            universityId
+            universityNum
         }
     });
     if(!user){
-        return next(new AppError("incorrect universityId!", 404));
+        return next(new AppError("universityNum not found", 404));
     }
     user.role = 'university_admin';
     await user.save();
@@ -30,18 +30,32 @@ export const getUAdmins = async (req,res,next)=>{
 
 export const getUAdmin = async (req,res,next)=>{
     const {id} = req.params;
-    const UAdmin = await userModel.findByPk(id);
+    const UAdmin = await userModel.findOne({
+        where:{
+            [Op.and]:[
+                {id},
+                {role:"university_admin"}
+            ]
+        }
+    });
     if(!UAdmin){
-        return next(new AppError("incorrect id!", 404));
+        return next(new AppError("uAdmin not found", 404));
     }
     return res.status(200).json({message:"success",UAdmin});
 }
 
 export const deleteUAdmin = async (req,res,next)=>{
     const {id} = req.params;
-    const UAdmin = await userModel.findByPk(id);
+    const UAdmin = await userModel.findOne({
+        where:{
+            [Op.and]:[
+                {id},
+                {role:"university_admin"}
+            ]
+        }
+    });
     if(!UAdmin){
-        return next(new AppError("incorrect id!", 404));
+        return next(new AppError("uAdmin not found", 404));
     }
     await UAdmin.destroy();
     return res.status(200).json({message:"success"});
@@ -61,7 +75,7 @@ export const updateUAdmin = async (req,res,next)=>{
         }
     });
     if(!uAdmin){
-        return next(new AppError("incorrect id!!", 404));
+        return next(new AppError("uAdmin not found", 404));
     }
     await uAdmin.update(req.body);
     return res.status(200).json({message:"success"});

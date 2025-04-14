@@ -13,15 +13,18 @@ export const getAllInstructors = async(req,res,next)=>{
 }
 
 export const getUniversityInstructors = async (req,res,next)=>{
-    const {universityName} = req.body;
+    const {universityId} = req.params;
     const instructors = await userModel.findAll({
         where:{
             [Op.and]:[
                 {role:'instructor'},
-                {universityName}
+                {universityId}
             ]
         }
     });
+    if(!instructors){
+        return next(new AppError("instructors not found",404));
+    }
     return res.status(200).json({message:"success", instructors});
 }
 
@@ -36,23 +39,23 @@ export const getInstructor = async(req,res,next)=>{
         }
     });
     if(!instructor){
-        return next(new AppError("incorrect id!!", 404));
+        return next(new AppError("instructor not found", 404));
     }
     return res.status(200).json({message:"success",instructor});
 }
 
 export const deleteInstructor = async (req,res,next)=>{
-    const {universityId} = req.body;
+    const {universityNum} = req.body;
     const instructor = await userModel.findOne({
         where:{
             [Op.and]:[
-                {universityId},
+                {universityNum},
                 {role:'instructor'}
             ]
         }
     });
     if(!instructor){
-        return next(new AppError("incorrect universityId!!", 404));
+        return next(new AppError("instructor not found", 404));
     }
     await instructor.destroy();
     return res.status(200).json({message:"success"});
@@ -72,7 +75,7 @@ export const updateInstructor = async (req,res,next)=>{
         }
     });
     if(!instructor){
-        return next(new AppError("incorrect id!!", 404));
+        return next(new AppError("instructor not found", 404));
     }
     await instructor.update(req.body);
     return res.status(200).json({message:"success"});
