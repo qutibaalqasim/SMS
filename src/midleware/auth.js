@@ -25,6 +25,7 @@ export const auth =  (accessRoles = [])=>{
         }
         req.id = decoded.id;
         req.universityId = decoded.universityId;
+        req.role = decoded.role;
         next();
     }
 }

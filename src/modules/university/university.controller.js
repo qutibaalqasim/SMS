@@ -27,6 +27,9 @@ export const getAllUniversities = async(req,res,next)=>{
 
 export const getUniversity = async (req,res,next)=>{
     const {id} = req.params;
+    if(req.role != "admin" || req.role != "university_admin"){
+        return next(new AppError("unothrized",403));
+    }
     const university = await universityModel.findByPk(id);
     if(!university){
         return next(new AppError("university not found", 404));
