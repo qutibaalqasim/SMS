@@ -28,8 +28,6 @@ const initApp = (app)=>{
     app.use('/universites', universityRouter)
     // localhost:3000/posts/
     app.use('/posts', postRouter);
-    // localhost:3000/comments/
-    app.use('/comments', commentRouter);
     // 404 handler
     app.get('*', (req,res)=>{
         return res.status(404).json({message:"page not found"})

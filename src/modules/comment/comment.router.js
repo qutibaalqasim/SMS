@@ -5,7 +5,7 @@ import { auth } from "../../midleware/auth.js";
 
 
 
-const router = Router();
+const router = Router({mergeParams: true});
 
 router.post('/',auth(['student','instructor','admin','university_admin']), asyncHandler(createComment));
 router.get('/:postId', auth(['student','instructor','admin','university_admin']), asyncHandler(getPostComments));
