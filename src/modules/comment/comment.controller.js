@@ -65,3 +65,25 @@ export const updateComment = async (req, res, next) => {
 
     return res.status(200).json({ message: "Comment updated successfully", comment });
 }
+
+export const deleteComment = async (req, res, next) => {
+    const { commentId } = req.params;
+
+    if (!commentId) {
+        return next(new AppError("Comment ID is required", 400));
+    }
+
+    const comment = await commentModel.findByPk(commentId);
+
+    if (!comment) {
+        return next(new AppError("Comment not found", 404));
+    }
+
+    if (comment.userId != req.id) {
+        return next(new AppError("You are not authorized to delete this comment", 403));
+    }
+
+    await comment.destroy();
+
+    return res.status(200).json({ message: "Comment deleted successfully" });
+}
