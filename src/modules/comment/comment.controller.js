@@ -4,7 +4,8 @@ import { AppError } from "../../utils/AppError.js";
 
 
 export const createComment = async (req, res, next) => {
-    const { postId, content } = req.body;
+    const { content } = req.body;
+    const { postId } = req.params;
 
     if (!postId || !content) {
         return next(new AppError("Post ID and content are required", 400));
@@ -31,11 +32,11 @@ export const getPostComments = async (req, res, next) => {
     }
 
     const comments = await commentModel.findAll({
-        where: { id:postId },
+        where: { postId },
         include: [{ model: userModel, attributes: ['userName', 'profilePic'] }]
     });
 
-    if (!comments || comments.length === 0) {
+    if (!comments || comments.length == 0) {
         return next(new AppError("No comments found for this post", 404));
     }
 
@@ -43,7 +44,7 @@ export const getPostComments = async (req, res, next) => {
 }
 
 export const updateComment = async (req, res, next) => {
-    const { commentId } = req.params;
+    const { commentId, postId } = req.params;
     const { content } = req.body;
 
     if (!commentId || !content) {
