@@ -79,3 +79,41 @@ export const getPostDetails = async (req, res, next) => {
 
     return res.status(200).json({message:"success", post});
 }
+
+export const updatePost = async (req, res, next) => {
+    const { postId } = req.params;
+    const post = await postModel.findOne({ where: { id: postId, userId: req.id } });
+
+    if (!post) {
+        return next(new AppError("Post not found or you are not authorized to update it", 404));
+    }
+
+    const updatedPost = await post.update(req.body);
+
+    if (req.files && req.files.length > 0) {
+        const images = req.files.map(file => cloudinary.uploader.upload(file.path));
+        const uploadedImages = await Promise.all(images);
+
+        const postImages = uploadedImages.map(image => ({
+            imageUrl: image.secure_url,
+            postId: updatedPost.id
+        }));
+
+        await postImageModel.bulkCreate(postImages);
+    }
+
+    return res.status(200).json({message:"success", post: updatedPost});
+}
+
+export const deletePost = async (req, res, next) => {
+    const { postId } = req.params;
+    const post = await postModel.findOne({ where: { id: postId, userId: req.id } });
+
+    if (!post) {
+        return next(new AppError("Post not found or you are not authorized to delete it", 404));
+    }
+
+    await post.destroy();
+
+    return res.status(200).json({message:"success", message: "Post deleted successfully"});
+}
