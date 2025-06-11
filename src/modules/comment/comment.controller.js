@@ -41,3 +41,27 @@ export const getPostComments = async (req, res, next) => {
 
     return res.status(200).json({ message: "Comments retrieved successfully", comments });
 }
+
+export const updateComment = async (req, res, next) => {
+    const { commentId } = req.params;
+    const { content } = req.body;
+
+    if (!commentId || !content) {
+        return next(new AppError("Comment ID and content are required", 400));
+    }
+
+    const comment = await commentModel.findByPk(commentId);
+
+    if (!comment) {
+        return next(new AppError("Comment not found", 404));
+    }
+
+    if (comment.userId != req.id) {
+        return next(new AppError("You are not authorized to update this comment", 403));
+    }
+
+    comment.content = content;
+    await comment.save();
+
+    return res.status(200).json({ message: "Comment updated successfully", comment });
+}
