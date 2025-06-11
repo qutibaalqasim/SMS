@@ -30,3 +30,19 @@ export const createPost = async (req,res,next)=>{
 
     return res.status(201).json({message:"success", post});
 }
+
+
+export const getPosts = async (req, res, next) => {
+    const posts = await postModel.findAll({
+        include: [{
+            model: postImageModel,
+            as: 'images'
+        }],
+    });
+
+    if (!posts || posts.length == 0) {
+        return next(new AppError("No posts found", 404));
+    }
+
+    return res.status(200).json({message:"success", posts});
+}
