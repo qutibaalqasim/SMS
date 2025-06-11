@@ -79,6 +79,7 @@ export const updateStudent = async(req,res,next)=>{
     return res.status(200).json({message:"success"});
 }
 
+// for updating profile image for all users
 export const updateProfileImage = async (req,res,next)=>{
     const {id} = req.params;
     if(id != req.id){

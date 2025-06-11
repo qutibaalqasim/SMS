@@ -12,10 +12,6 @@ const postModel = sequelize.define("Post",{
         type:DataTypes.TEXT,
         allowNull:false,
       },
-      postPic:{
-        type:DataTypes.STRING,
-        allowNull:true,
-      },
       likesCount:{
         type:DataTypes.INTEGER,
         defaultValue:0
@@ -24,7 +20,7 @@ const postModel = sequelize.define("Post",{
         type:DataTypes.INTEGER,
         allowNull:false,
         references:{
-          model:"Users",
+          model:userModel,
           key:"id"
         }
       }

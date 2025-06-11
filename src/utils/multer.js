@@ -1,5 +1,10 @@
 import multer from 'multer';
 
+export const fileValidation = {
+    image: ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'],
+    video: ['video/mp4', 'video/mpeg', 'video/quicktime'],
+    document: ['application/pdf', 'application/msword' , 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']
+};
 
 function fileUpload(){
     const storage = multer.diskStorage({});

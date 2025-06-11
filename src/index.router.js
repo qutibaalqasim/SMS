@@ -4,7 +4,9 @@ import studentRouter from "./modules/student/student.router.js";
 import intructorRouter from "./modules/instructor/instructor.router.js";
 import UAdminRouter from "./modules/university admin/universityAdmin.router.js";
 import universityRouter from "./modules/university/university.router.js";
+import postRouter from "./modules/post/post.router.js";
 import cors from 'cors';
+
 const initApp = (app)=>{
     connectDB();
     app.use(cors());
@@ -23,6 +25,8 @@ const initApp = (app)=>{
     app.use('/UAdmins',UAdminRouter);
     // localhost:3000/universities/
     app.use('/universites', universityRouter)
+    // localhost:3000/posts/
+    app.use('/posts', postRouter);
     app.get('*', (req,res)=>{
         return res.status(404).json({message:"page not found"})
     });

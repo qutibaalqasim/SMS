@@ -9,7 +9,7 @@ import { createUniversity, deleteUniversity, getAllUniversities, getUniversity, 
 
 const router = Router();
 
-router.post('/',auth(['admin']), validation(createUniversitySchema), asyncHandler(createUniversity));
+router.post('/',/*auth(['admin']),*/ validation(createUniversitySchema), asyncHandler(createUniversity));
 router.get('/', auth(['admin']), asyncHandler(getAllUniversities));
 router.get('/:id', auth(['admin','university_admin']),validation(getUniversitySchema),asyncHandler(getUniversity));
 router.delete('/:id', auth(['admin']), validation(deleteUniversitySchema), asyncHandler(deleteUniversity));
