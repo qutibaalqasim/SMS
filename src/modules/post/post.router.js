@@ -8,7 +8,7 @@ import fileUpload from "../../utils/multer.js";
 
 const router = Router();
 
-router.post('/', auth(['instructor','admin','university_admin']),fileUpload().single('image'),asyncHandler(createPost));
+router.post('/', auth(['instructor','admin','university_admin']),fileUpload().array('images', 5),asyncHandler(createPost));
 
 
 export default router;
