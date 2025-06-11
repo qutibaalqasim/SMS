@@ -20,3 +20,26 @@ export const createReaction = async (req, res, next) => {
 
     return res.status(201).json({ message: "Reaction created successfully", reaction });
 }
+
+export const deleteReaction = async (req, res, next) => {
+    const {postId} = req.params;
+    const {emoji} = req.body;
+
+    if (!postId || !emoji) {
+        return next(new AppError("Post ID and emoji are required", 400));
+    }
+
+    const reaction = await reactionModel.destroy({
+        where: {
+            postId,
+            emoji,
+            userId: req.id
+        }
+    });
+
+    if (!reaction) {
+        return next(new AppError("Failed to delete reaction", 400));
+    }
+
+    return res.status(200).json({ message: "Reaction deleted successfully" });
+}
