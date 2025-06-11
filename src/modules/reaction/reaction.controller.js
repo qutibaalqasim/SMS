@@ -1,0 +1,22 @@
+import reactionModel from "../../../DB/models/reaction.model.js";
+import { AppError } from "../../utils/AppError.js";
+
+
+export const createReaction = async (req, res, next) => {
+    const {postId} = req.params;
+    const {emoji} = req.body;
+    if (!postId || !emoji) {
+        return next(new AppError("Post ID and emoji are required", 400));
+    }
+    const reaction = await reactionModel.create({
+        emoji,
+        userId: req.id,
+        postId
+    });
+
+    if(!reaction) {
+        return next(new AppError("Failed to create reaction", 400));
+    }
+
+    return res.status(201).json({ message: "Reaction created successfully", reaction });
+}
