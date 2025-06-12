@@ -1,8 +1,9 @@
 import { Sequelize } from "sequelize";
 
 
-export const sequelize = new Sequelize('sms', 'root', '', {
-    host: 'localhost',
+export const sequelize = new Sequelize('freedb_smsProject', 'freedb_qutiba9', 'W7Z$k$%j*vdZx4f', {
+    host: 'sql.freedb.tech',
+    port: 3306,
     dialect: 'mysql'
   });
 
